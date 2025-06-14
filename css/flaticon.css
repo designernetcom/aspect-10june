@@ -82,12 +82,12 @@
 .flaticon-plus-symbol:before {
     content: "\f116";
 }
-/* .flaticon-right-arrow:before {
+.flaticon-right-arrow:before {
     content: "\f117";
-} */
-/* .flaticon-left-arrow:before {
+} 
+.flaticon-left-arrow:before {
     content: "\f118";
-} */
+}
 .flaticon-email:before {
     content: "\f119";
 }
