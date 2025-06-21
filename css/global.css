@@ -1913,7 +1913,7 @@ img{
 }
 
 .sec-title .text{
-	margin-top:var(--margin-top-30);
+	/* margin-top:var(--margin-top-30); */
 }
 
 .sec-title h2{

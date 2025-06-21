@@ -2955,7 +2955,7 @@
 
 .service-section-two .owl-dots {
 	position: relative;
-	display: block;
+	display: none;
 	text-align: center;
 	counter-reset: slides-num;
 	margin-top: var(--margin-top-15)
@@ -4455,7 +4455,7 @@
 
 .main-footer .widgets-section {
 	position: relative;
-	padding-bottom: var(--padding-bottom-60);
+	padding-bottom: 10px;
 }
 
 .main-footer .logo-widget {
@@ -7287,7 +7287,7 @@
 	-webkit-transition: all 500ms ease;
 	-ms-transition: all 500ms ease;
 	-o-transition: all 500ms ease;
-	padding: 17px 20px 17px 70px;
+	padding: 17px 20px 17px 20px;
 	background-color: var(--white-color);
 	margin-bottom: var(--margin-bottom-20);
 	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.10);
@@ -7474,6 +7474,7 @@
 	font-weight: 500;
 	/* margin-bottom:30px; */
 	color: var(--color-five);
+	text-align: justify;
 }
 
 .project-block .inner-box .explore-btn {
@@ -11979,7 +11980,7 @@
 }
 
 .content-text {
-	padding: 20px 0;
+	padding: 2px 0;
 }
 
 .content-title {
@@ -12240,7 +12241,7 @@
 	}
 
 	.section-title {
-		font-size: 1.8rem;
+		font-size: 1.7rem;
 	}
 
 	.section-description {

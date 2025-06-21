@@ -893,7 +893,7 @@
 	}
 	
 	.about-section{
-		padding-top:var(--padding-top-80);
+		padding-top:50px;
 	}
 	
 	.main-header .header-upper{
@@ -913,7 +913,7 @@
 	}
 	
 	.about-section{
-		padding-bottom:var(--padding-bottom-70);
+		padding-bottom: 18px;
 	}
 	
 	.products-section,
@@ -1311,7 +1311,7 @@
 	}
 	
 	.project-section-three .project-tab .tab-btns-box .p-tab-btn{
-		font-size: var(--font-14);
+		font-size: 16px;
 	}
 	
 	.project-section-three .lower-box{
@@ -1388,7 +1388,7 @@
 	}
 	
 	.page-title h2, h2 {
-	  font-size: 26px;
+	  font-size: 25px;
 	  line-height: 30px;
 	}
 	
@@ -1401,4 +1401,19 @@
 		padding-right:var(--padding-right-15);
 	}
 	
+	.justifyPara{
+		text-align: justify;
+	}
+
+	.pimg{
+		height: 190px ;
+	}
+
+	.project-section-three{
+		padding-bottom: 35px !important;
+	}
+
+	.aboutclient{
+		padding-bottom: 30px;
+	}
 }
