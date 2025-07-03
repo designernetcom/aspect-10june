@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Card Slider</title>
+    <style>
+        .scs-container * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .scs-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ===== SECTION 1.1: HEADER SECTION ===== */
+        .scs-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .scs-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            letter-spacing: -1px;
+        }
+
+        .scs-header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            .scs-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .scs-header p {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .scs-header {
+                margin-bottom: 30px;
+            }
+
+            .scs-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .scs-header p {
+                font-size: 0.95rem;
+            }
+        }
+
+        /* ===== SECTION 2: SLIDER STRUCTURE ===== */
+        .scs-slider-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: visible;
+            border-radius: 15px;
+        }
+
+        .scs-slider-track {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        .scs-slide {
+            min-width: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 30px 10px 10px 10px;
+        }
+
+        /* ===== SECTION 3: CARD STYLES ===== */
+        .scs-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: fit-content;
+        }
+
+        /* Shimmer Effect */
+        .scs-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        /* Color Gradient Overlay */
+        .scs-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(135deg,
+                    rgba(102, 126, 234, 0.1) 0%,
+                    rgba(118, 75, 162, 0.1) 50%,
+                    rgba(255, 107, 107, 0.1) 100%);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1;
+        }
+
+        .scs-card:hover::before {
+            left: 100%;
+        }
+
+        .scs-card:hover::after {
+            height: 100%;
+        }
+
+        .scs-card:hover {
+            transform: translateY(-20px) scale(1.03);
+            box-shadow: 0 30px 60px rgba(102, 126, 234, 0.2);
+            background: rgba(255, 255, 255, 1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            z-index: 10;
+        }
+
+        .scs-card:active {
+            transform: translateY(-15px) scale(1.01);
+            transition: all 0.1s ease;
+        }
+
+        /* Ensure content stays above overlay */
+        .scs-card>* {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===== SECTION 4: CARD CONTENT ===== */
+        .scs-card-image {
+            width: 100%;
+            height: 140px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            transition: transform 0.4s ease;
+        }
+
+        .scs-card:hover .scs-card-image {
+            transform: scale(1.05);
+        }
+
+        .scs-card-category {
+            display: inline-block;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scs-card-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+            transition: left 0.5s ease;
+        }
+
+        .scs-card-category span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .scs-card:hover .scs-card-category {
+            transform: translateX(3px) scale(1.05);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .scs-card:hover .scs-card-category::before {
+            left: 0;
+        }
+
+        .scs-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+            line-height: 1.3;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+        }
+
+        .scs-card-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .scs-card:hover .scs-card-title {
+            color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .scs-card:hover .scs-card-title::after {
+            width: 40px;
+        }
+
+        .scs-card-description {
+            font-size: 12px;
+            color: #718096;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .scs-card:hover .scs-card-description {
+            color: #4a5568;
+            transform: translateX(3px);
+        }
+
+        .scs-card-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ripple Effect for Button */
+        .scs-card-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+
+        .scs-card-button::after {
+            content: '→';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            z-index: 2;
+        }
+
+        .scs-card:hover .scs-card-button {
+            transform: scale(1.2) rotate(360deg);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
+        }
+
+        .scs-card:hover .scs-card-button::before {
+            width: 200%;
+            height: 200%;
+        }
+
+        .scs-card:hover .scs-card-button::after {
+            transform: translateX(2px) scale(1.2);
+            color: #fff;
+        }
+
+        /* ===== SECTION 5: NAVIGATION CONTROLS ===== */
+        .scs-nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .scs-nav-button:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .scs-nav-prev {
+            left: 20px;
+        }
+
+        .scs-nav-next {
+            right: 20px;
+        }
+
+        /* ===== SECTION 6: DOTS INDICATOR ===== */
+        .scs-dots-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .scs-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .scs-dot.scs-active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .scs-dot::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .scs-dot:hover::after {
+            opacity: 1;
+        }
+
+        /* ===== SECTION 7: RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .scs-slide {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+                padding: 25px 10px 10px 10px;
+            }
+
+            .scs-card {
+                padding: 18px 16px;
+            }
+
+            .scs-card-title {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .scs-container {
+                padding: 50px 15px 30px 15px;
+            }
+
+            .scs-slide {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                padding: 20px 10px 10px 10px;
+            }
+
+            .scs-card {
+                padding: 16px 14px;
+            }
+
+            .scs-card-image {
+                height: 120px;
+            }
+
+            .scs-card-title {
+                font-size: 14px;
+            }
+
+            .scs-nav-button {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+
+            .scs-nav-prev {
+                left: 15px;
+            }
+
+            .scs-nav-next {
+                right: 15px;
+            }
+        }
+
+        /* Mobile - Single card view with auto-slide every 3 seconds */
+        @media (max-width: 480px) {
+            .scs-container {
+                padding: 40px 10px 30px 10px;
+            }
+
+            .scs-slider-wrapper {
+                overflow: hidden;
+            }
+
+            .scs-slider-track {
+                flex-direction: row;
+            }
+
+            .scs-slide {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 15px 0; /* Adjusted padding for vertical centering */
+                min-width: 100%;
+                flex-shrink: 0;
+                width: 100%; /* Ensure slide takes full width */
+            }
+
+            .scs-card {
+                width: 90%; /* Slightly less than full width for better spacing */
+                max-width: 320px; /* Reduced max-width for better fit */
+                padding: 20px 18px;
+                margin: 0 auto; /* Center card horizontally */
+                flex-shrink: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center; /* Center card content */
+            }
+
+            .scs-card:hover {
+                transform: translateY(-10px) scale(1.02);
+            }
+
+            .scs-card-image {
+                height: 160px;
+                width: 100%; /* Ensure image takes full card width */
+                object-fit: cover;
+            }
+
+            .scs-card-title {
+                font-size: 16px;
+                text-align: center; /* Center title text */
+            }
+
+            .scs-card-description {
+                font-size: 13px;
+                -webkit-line-clamp: 2;
+                text-align: center; /* Center description text */
+            }
+
+            .scs-nav-button {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .scs-nav-prev {
+                left: 5px; /* Slightly closer to edge for better spacing */
+            }
+
+            .scs-nav-next {
+                right: 5px; /* Slightly closer to edge for better spacing */
+            }
+        }
+
+        /* ===== SECTION 8: ANIMATION UTILITIES ===== */
+        @keyframes scs-fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scs-card {
+            animation: scs-fadeIn 0.6s ease-out;
+        }
+
+        .scs-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .scs-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .scs-card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        /* ===== SECTION 9: LOADING STATE ===== */
+        .scs-loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ===== HTML STRUCTURE SECTION ===== -->
+    <div class="scs-container">
+        <!-- Header Section -->
+        <div class="scs-header">
+            <h1>Professional Services</h1>
+            <p>Discover our comprehensive range of expert services designed to elevate your business and drive
+                exceptional results</p>
+        </div>
+
+        <div class="scs-slider-wrapper">
+            <div class="scs-slider-track" id="scsSliderTrack">
+                <!-- Slide 1 -->
+                <div class="scs-slide">
+                    <div class="scs-card" onclick="navigateToService('designer')">
+                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=200&fit=crop"
+                            alt="Designer Service" class="scs-card-image">
+                        <span class="scs-card-category"><span>Designer</span></span>
+                        <h3 class="scs-card-title">Artistry fuels innovation in digital landscapes</h3>
+                        <p class="scs-card-description">Transform your brand with cutting-edge design solutions that
+                            captivate audiences.</p>
+                        <div class="scs-card-button"></div>
+                    </div>
+                    <div class="scs-card" onclick="navigateToService('developer')">
+                        <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=200&fit=crop"
+                            alt="Developer Service" class="scs-card-image">
+                        <span class="scs-card-category"><span>Developer</span></span>
+                        <h3 class="scs-card-title">Coding innovation drives future technology</h3>
+                        <p class="scs-card-description">Build robust applications with modern development practices and
+                            technologies.</p>
+                        <div class="scs-card-button"></div>
+                    </div>
+                    <div class="scs-card" onclick="navigateToService('marketer')">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop"
+                            alt="Marketing Service" class="scs-card-image">
+                        <span class="scs-card-category"><span>Marketer</span></span>
+                        <h3 class="scs-card-title">Strategic marketing transforms brand narratives</h3>
+                        <p class="scs-card-description">Elevate your brand with data-driven marketing strategies for
+                            results.</p>
+                        <div class="scs-card-button"></div>
+                    </div>
+                    <div class="scs-card" onclick="navigateToService('consultant')">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=200&fit=crop"
+                            alt="Consultant Service" class="scs-card-image">
+                        <span class="scs-card-category"><span>Consultant</span></span>
+                        <h3 class="scs-card-title">Strategic consulting drives business transformation</h3>
+                        <p class="scs-card-description">Navigate complex challenges with expert guidance and proven
+                            methodologies.</p>
+                        <div class="scs-card-button"></div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="scs-slide">
+                    <div class="scs-card" onclick="navigateToService('analyst')">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=200&fit=crop"
+                            alt="Data Analyst Service" class="scs-card-image">
+                        <span class="scs-card-category"><span>Analyst</span></span>
+                        <h3 class="scs-card-title">Data analytics unlock hidden business insights</h3>
+                        <p class="scs-card-description">Transform raw data into actionable insights for informed
+                            decision-making.</p>
+                        <div class="scs-card-button"></div>
+                    </div>
+                    <div class="scs-card" onclick="navigateToService('support')">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=200&fit=crop"
+                            alt="Support Service" class="scs-card-image">
+                        <span class="scs-card-category"><span>Support</span></span>
+                        <h3 class="scs-card-title">Premium support ensures seamless operations</h3>
+                        <p class="scs-card-description">Reliable 24/7 support services that keep your business running
+                            smoothly.</p>
+                        <div class="scs-card-button"></div>
+                    </div>
+                    <div class="scs-card" onclick="navigateToService('seo')">
+                        <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=400&h=200&fit=crop"
+                            alt="SEO Service" class="scs-card-image">
+                        <span class="scs-card-category"><span>SEO Expert</span></span>
+                        <h3 class="scs-card-title">SEO optimization boosts online visibility</h3>
+                        <p class="scs-card-description">Improve search rankings with proven SEO strategies and
+                            techniques.</p>
+                        <div class="scs-card-button"></div>
+                    </div>
+                    <div class="scs-card" onclick="navigateToService('content')">
+                        <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&h=200&fit=crop"
+                            alt="Content Service" class="scs-card-image">
+                        <span class="scs-card-category"><span>Content</span></span>
+                        <h3 class="scs-card-title">Content creation engages target audiences</h3>
+                        <p class="scs-card-description">Create compelling content that resonates with your audience
+                            effectively.</p>
+                        <div class="scs-card-button"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <button class="scs-nav-button scs-nav-prev" onclick="previousSlide()">‹</button>
+        <button class="scs-nav-button scs-nav-next" onclick="nextSlide()">›</button>
+
+        <!-- Dots Indicator -->
+        <div class="scs-dots-container" id="scsDotsContainer"></div>
+    </div>
+
+    <!-- ===== JAVASCRIPT SECTION ===== -->
+    <script>
+        // ===== SLIDER CONFIGURATION =====
+        class ServiceCardSlider {
+            constructor() {
+                this.currentSlide = 0;
+                this.totalSlides = document.querySelectorAll('.scs-slide').length;
+                this.sliderTrack = document.getElementById('scsSliderTrack');
+                this.dotsContainer = document.getElementById('scsDotsContainer');
+                this.autoSlideInterval = null;
+                this.autoSlideDelay = this.getAutoSlideDelay();
+                this.isMobile = window.innerWidth <= 480;
+                this.allCards = [];
+
+                this.init();
+            }
+
+            getAutoSlideDelay() {
+                return window.innerWidth <= 480 ? 3000 : 5000;
+            }
+
+            init() {
+                this.setupMobileCards();
+                this.createDots();
+                this.updateSlider();
+                this.startAutoSlide();
+                this.addEventListeners();
+            }
+
+            setupMobileCards() {
+                if (this.isMobile) {
+                    // Collect all cards into a single array
+                    this.allCards = Array.from(document.querySelectorAll('.scs-card'));
+
+                    // Clear the slider track
+                    this.sliderTrack.innerHTML = '';
+
+                    // Create individual slides for each card on mobile
+                    this.allCards.forEach((card, index) => {
+                        const slide = document.createElement('div');
+                        slide.className = 'scs-slide';
+                        slide.appendChild(card.cloneNode(true));
+                        this.sliderTrack.appendChild(slide);
+                    });
+
+                    this.totalSlides = this.allCards.length;
+                }
+            }
+
+            createDots() {
+                this.dotsContainer.innerHTML = '';
+
+                const dotCount = this.isMobile ? this.allCards.length : this.totalSlides;
+
+                for (let i = 0; i < dotCount; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'scs-dot';
+                    if (i === 0) dot.classList.add('scs-active');
+                    dot.addEventListener('click', () => this.goToSlide(i));
+                    this.dotsContainer.appendChild(dot);
+                }
+            }
+
+            updateSlider() {
+                const offset = -this.currentSlide * 100;
+                this.sliderTrack.style.transform = `translateX(${offset}%)`;
+                this.updateDots();
+            }
+
+            updateDots() {
+                const dots = document.querySelectorAll('.scs-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('scs-active', index === this.currentSlide);
+                });
+            }
+
+            nextSlide() {
+                const maxSlides = this.isMobile ? this.allCards.length : this.totalSlides;
+                this.currentSlide = (this.currentSlide + 1) % maxSlides;
+                this.updateSlider();
+                this.resetAutoSlide();
+            }
+
+            previousSlide() {
+                const maxSlides = this.isMobile ? this.allCards.length : this.totalSlides;
+                this.currentSlide = (this.currentSlide - 1 + maxSlides) % maxSlides;
+                this.updateSlider();
+                this.resetAutoSlide();
+            }
+
+            goToSlide(index) {
+                this.currentSlide = index;
+                this.updateSlider();
+                this.resetAutoSlide();
+            }
+
+            startAutoSlide() {
+                this.autoSlideInterval = setInterval(() => {
+                    this.nextSlide();
+                }, this.autoSlideDelay);
+            }
+
+            stopAutoSlide() {
+                if (this.autoSlideInterval) {
+                    clearInterval(this.autoSlideInterval);
+                }
+            }
+
+            resetAutoSlide() {
+                this.stopAutoSlide();
+                this.startAutoSlide();
+            }
+
+            handleResize() {
+                const wasMobile = this.isMobile;
+                this.isMobile = window.innerWidth <= 480;
+                this.autoSlideDelay = this.getAutoSlideDelay();
+
+                if (wasMobile !== this.isMobile) {
+                    this.currentSlide = 0;
+                    location.reload(); // Simplest way to reinitialize structure
+                } else {
+                    this.updateSlider();
+                }
+            }
+
+            addEventListeners() {
+                const container = document.querySelector('.scs-container');
+                container.addEventListener('mouseenter', () => this.stopAutoSlide());
+                container.addEventListener('mouseleave', () => this.startAutoSlide());
+
+                // Touch/swipe support
+                let startX = 0;
+                let endX = 0;
+
+                container.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                });
+
+                container.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                });
+
+                container.addEventListener('touchend', (e) => {
+                    endX = e.changedTouches[0].clientX;
+                    const diff = startX - endX;
+
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.previousSlide();
+                        }
+                    }
+                });
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') {
+                        this.previousSlide();
+                    } else if (e.key === 'ArrowRight') {
+                        this.nextSlide();
+                    }
+                });
+
+                // Resize handler
+                window.addEventListener('resize', () => {
+                    this.handleResize();
+                });
+            }
+        }
+
+        // ===== NAVIGATION FUNCTIONS =====
+        let slider;
+
+        function nextSlide() {
+            slider.nextSlide();
+        }
+
+        function previousSlide() {
+            slider.previousSlide();
+        }
+
+        function navigateToService(service) {
+            event.currentTarget.classList.add('scs-loading');
+
+            const serviceUrls = {
+                'designer': '/services/design',
+                'developer': '/services/development',
+                'marketer': '/services/marketing',
+                'consultant': '/services/consulting',
+                'analyst': '/services/analytics',
+                'support': '/services/support',
+                'seo': '/services/seo',
+                'content': '/services/content'
+            };
+
+            setTimeout(() => {
+                event.currentTarget.classList.remove('scs-loading');
+
+                if (serviceUrls[service]) {
+                    window.location.href = serviceUrls[service];
+                } else {
+                    console.log(`Navigating to ${service} service page`);
+                    alert(`Navigating to ${service} service page`);
+                }
+            }, 300);
+        }
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function () {
+            slider = new ServiceCardSlider();
+        });
+    </script>
+</body>
+
+</html>
