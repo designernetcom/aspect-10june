@@ -1136,7 +1136,7 @@
 
 .mobile-menu .navigation li.dropdown .dropdown-btn {
 	position: absolute;
-	right: 0px;
+	right: 165px;
 	top: 0px;
 	width: 44px;
 	height: 44px;
@@ -1149,7 +1149,7 @@
 }
 
 .mobile-menu .navigation li.dropdown .dropdown-btn:after {
-	content: '';
+	/* content: ''; */
 	position: absolute;
 	left: 0px;
 	top: 10px;
