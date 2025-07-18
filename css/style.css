@@ -11705,7 +11705,14 @@
 /* -------------logo------------- */
 
 .MainLogo1 img {
-	height: 150px !important;
+	height: 142px !important;
+	transform: translateX(-47px);
+}
+
+@media screen and (max-width: 579px) {
+	.MainLogo1 img {
+		transform: translateX(-7px) !important;
+	}
 }
 
 /* ----------------------our team ------------------- */
@@ -12182,7 +12189,7 @@
 	.about-content {
 		grid-template-columns: 1fr;
 		gap: 50px;
-		
+
 	}
 
 	.image-container {
@@ -12196,7 +12203,7 @@
 	.content-title {
 		font-size: 2rem;
 	}
-	
+
 }
 
 @media (max-width: 768px) {
@@ -12269,9 +12276,9 @@
 }
 
 @media screen and (min-width: 600px) {
-   .section-title{
-	margin-top: 40px !important;
-   }
+	.section-title {
+		margin-top: 40px !important;
+	}
 }
 
 /* ----------------------------- About us section end---------------------------- */
@@ -12513,7 +12520,8 @@
 }
 
 .scs-card:hover .scs-card-title {
-	color: rgb(250, 67, 24);;
+	color: rgb(250, 67, 24);
+	;
 	transform: translateX(5px);
 }
 
@@ -13088,7 +13096,7 @@
 .demo-content h1 {
 	font-size: 2.5rem;
 	margin-bottom: 20px;
-	text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .demo-content p {
@@ -13106,7 +13114,7 @@
 	transform: translateY(-50%);
 	/* background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%); */
 	border-radius: 25px 0 0 25px;
-	box-shadow: -5px 0 20px rgba(0,0,0,0.15);
+	box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
 	padding: 20px 15px;
 	z-index: 1000;
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -13114,7 +13122,7 @@
 
 .social-panel:hover {
 	transform: translateY(-50%) translateX(-5px);
-	box-shadow: -10px 0 30px rgba(0,0,0,0.2);
+	box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
 }
 
 .social-icons {
@@ -13142,7 +13150,7 @@
 	position: absolute;
 	inset: 0;
 	border-radius: 50%;
-	background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+	background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
 	opacity: 0;
 	transition: opacity 0.3s ease;
 }
@@ -13160,7 +13168,7 @@
 
 .social-icon:hover {
 	transform: scale(1.1) rotate(5deg);
-	box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .social-icon:hover svg {
@@ -13181,7 +13189,7 @@
 }
 
 .instagram {
-	background: linear-gradient(135deg, #e4405f 0%, #833ab4 50%, #fcb045 100%);
+	background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
 }
 
 .youtube {
@@ -13242,6 +13250,7 @@
 		transform: translateY(-50%) translateX(100%);
 		opacity: 0;
 	}
+
 	to {
 		transform: translateY(-50%) translateX(0);
 		opacity: 1;
@@ -13251,3 +13260,113 @@
 .social-panel {
 	animation: slideIn 0.5s ease-out;
 }
+
+/* ---------------------- projects page ----------------------- */
+
+.project-block-section {
+	/* padding: 50px 20px; */
+	margin-left: 20px;
+}
+
+.project-block-title {
+	text-align: center;
+	font-size: 2.5rem;
+	margin-bottom: 50px;
+	color: #1D4331;
+	line-height: 1;
+}
+
+.project-block {
+	display: flex;
+	flex-wrap: wrap;
+	/* align-items: center; */
+	justify-content: center;
+	margin-bottom: 60px;
+}
+
+ .project-block:nth-child(even) {
+	flex-direction: row-reverse;
+}
+
+.project-block-text {
+	flex: 1;
+	padding: 30px;
+	font-size: 1.2rem;
+	color: #333;
+	/* background: #ffffff;
+	box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+	min-width: 280px; */
+}
+
+.project-block-text h3 {
+	margin-top: 0;
+	color: #1D4331;
+}
+
+.project-block-image {
+	flex: 1;
+	min-width: 280px;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.project-block-image img {
+	width: 100%;
+	height: 100%;
+	max-height: 400px;
+	object-fit: cover;
+	border-radius: 8px;
+	transition: transform 0.3s ease;
+}
+
+/* .project-block-image img:hover {
+	
+  } */
+
+/* Modal */
+.project-block-modal {
+	display: none;
+	position: fixed;
+	z-index: 999;
+	padding-top: 80px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.9);
+}
+
+.project-block-modal-content {
+	margin: auto;
+	display: block;
+	max-width: 90%;
+	max-height: 80vh;
+}
+
+.project-block-close {
+	position: absolute;
+	top: 20px;
+	right: 35px;
+	color: #fff;
+	font-size: 40px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+@media (max-width: 768px) {
+	.project-block {
+		flex-direction: column !important;
+	}
+
+	.project-block-text {
+		text-align: center;
+		padding: 20px;
+	}
+
+	.project-block-image img {
+		max-height: 300px;
+	}
+}
+
+
