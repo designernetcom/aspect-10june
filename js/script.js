@@ -963,3 +963,16 @@ imageContainer.addEventListener('mouseenter', () => {
 imageContainer.addEventListener('mouseleave', () => {
 	startAutoSlide();
 });
+
+
+
+// -------------------- project page --------------------
+
+function openModal(src) {
+	document.getElementById("project-block-modal").style.display = "block";
+	document.getElementById("projectModalImg").src = src;
+  }
+
+  function closeModal() {
+	document.getElementById("project-block-modal").style.display = "none";
+  }
